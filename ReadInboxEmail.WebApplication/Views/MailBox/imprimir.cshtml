@@ -1,0 +1,271 @@
+﻿@model IEnumerable<ReadInboxEmail.WebApplication.Models.DETALLESCOMPROBANTES>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Comprobante</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    @*<style>
+            table {
+                border-collapse: collapse;
+            }
+
+            table, td, th {
+                border: 1px solid black;
+            }
+        </style>*@
+</head>
+<body>
+
+
+    <table style="border-collapse:collapse">
+        <tr>
+            <td width="490px"> <img src="~/Content/images/BBVA-continental.jpg" width="200" height="50" /> </td>
+
+         
+
+            <td width="350px" rowspan="2" style="border: 1px solid;  text-align:center; padding:10px">
+                <strong>
+                    RUC Nro. @Model.FirstOrDefault().Numero_RUC
+                    <br />
+                    <br />
+                    COMPROBANTE DE PAGO
+
+                    <br />
+                    <br />
+                    Nro. @Model.FirstOrDefault().Numeracion
+                </strong>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td style="font-size:12px; padding:1px">
+                @Model.FirstOrDefault().Razon_social
+                <br />
+                @Model.FirstOrDefault().Domicilio_fiscal
+            </td>
+
+
+        </tr>
+
+
+
+
+
+
+
+
+
+
+
+
+    </table>
+
+    <br /> <b style="font-size:14px">Se&ntilde;ores: @Model.FirstOrDefault().Apellidos_nombres</b>
+    <br /><b style="font-size:14px">@Model.FirstOrDefault().TIPODOCUMENTO :  @Model.FirstOrDefault().NUMERODOCUMENTO</b>
+    <br />
+
+    @{
+        var fechaemision = Convert.ToDateTime(Model.FirstOrDefault().Fecha_emision).Date.ToString("dd/MM/yyyy");
+    }
+
+
+
+    <b style="font-size:14px"> Fecha : @fechaemision</b>
+    <br />
+    @*<br />  <b> Fecha: @Html.DisplayFor(model => model.Fecha_cobro)</b>
+        <br />*@
+    <br /><b style="font-size:14px">  Moneda: 
+    
+    @{
+        var moneda = "";
+        if (Model.FirstOrDefault().Tipo_moneda.Trim().Equals("PEN"))
+        {
+            moneda = "SOLES";
+        }
+
+        if (Model.FirstOrDefault().Tipo_moneda.Trim().Equals("USD"))
+        {
+            moneda = "DOLARES";
+        }
+    }
+              @moneda
+</b>
+
+
+    <br />
+    <br />
+
+    @*<div class="container">
+
+        <div class="row">
+
+            <div class="col-sm-8">
+                <br /> <img src="~/images/comprobante.png" class="img-rounded" alt="Cinque Terre" width="150" height="50" />
+                <br />  @Html.DisplayFor(model => model.Razon_social)
+
+                <br /> @Html.DisplayFor(model => model.Domicilio_fiscal)</div>
+
+            <div class="col-sm-4">
+                <div class="box box-solid box-primary">
+
+                        <br /> RUC: @Html.DisplayFor(model => model.Numero_RUC)
+                        <br />COMPROBANTE DE PAGO
+                        <br />   Nro: @Html.DisplayFor(model => model.codigo_relacionado)
+
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
+            </div>
+
+
+        <br />
+        <br />
+
+
+
+        <br /> <b>Señores: @Html.DisplayFor(model => model.Apellidos_nombres)</b>
+        <br /><b>DNI: @Html.DisplayFor(model => model.Tipo_numero_documento)</b>
+        <br />  <b> Fecha: @Html.DisplayFor(model => model.Fecha_cobro)</b>
+        <br />
+        <br /><b>  Moneda: @Html.DisplayFor(model => model.Tipo_moneda) </b>
+
+
+        </div>*@
+
+    <table width="900px">
+        <thead>
+            <tr style="border:solid 1px">
+                <th style="text-align:center; font-size:10px; padding:5px; border:solid 1px; width:80px">
+                    FECHA PAGO
+                </th>
+                <th style="text-align:center; font-size:10px; padding:5px; width:300px; border:solid 1px">
+                    DESCRIPCION
+                </th>
+                <th style="text-align:center; font-size:10px; padding:5px; border:solid 1px">
+                    CAPITAL
+                </th>
+                <th style="text-align:center; font-size:10px; padding:5px; border:solid 1px">
+                    INTERES
+                </th>
+                <th style="text-align:center; font-size:10px; padding:5px; border:solid 1px; width:10px">
+                    COMISION
+                </th>
+                <th style="text-align:center; font-size:10px; padding:5px; border:solid 1px">
+                    OTROS
+                </th>
+                <th style="text-align:center; font-size:10px; padding:5px; width:150px; border:solid 1px">
+                    IMPORTE NO GRAVADO IGV
+                </th>
+                <th style="text-align:center; font-size:10px; padding:5px; border:solid 1px; width:150px">
+                    IMPORTE GRAVADO IGV
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="font-size:11px; padding:5px; border:solid 1px; text-align:center">
+                        @{
+                            var fecha = Convert.ToDateTime(item.Fecha_cobro).Date.ToString("dd/MM/yyyy");
+                        }
+                        @fecha
+                    </td>
+                    <td style="font-size:11px; padding:5px;border:solid 1px">
+                        @item.CODIGO_RELACIONADO  - @item.Descripcion_producto - @item.Descripcion_subproducto
+                    </td>
+                    <td style="text-align:right; font-size:11px; padding:5px; border:solid 1px">
+                        @item.CAPITAL.ToString("#,##0.00")
+                    </td>
+                    <td style="text-align:right; font-size:11px; padding:5px; border:solid 1px">
+                        @item.INTERES.ToString("#,##0.00")
+                    </td>
+                    <td style="text-align:right; font-size:11px; padding:5px; border:solid 1px">
+                        @item.COMISION.ToString("#,##0.00")
+                    </td>
+                    <td style="text-align:right; font-size:11px; padding:5px; border:solid 1px">
+                        @item.OTROS.ToString("#,##0.00")
+                    </td>
+                    <td style="text-align:right; font-size:11px; padding:5px; border:solid 1px">
+                        @{
+                            var suma = item.INTERES + item.COMISION + item.OTROS + item.CAPITAL;
+                        }
+                        @suma.ToString("#,##0.00")
+
+                    </td>
+                    <td style="text-align:right; font-size:11px; padding:5px; border:solid 1px">
+                        @Convert.ToDecimal(item.IMPORTEGRAVADO).ToString("#,##0.00")
+                    </td>
+
+                </tr>
+                            }
+        </tbody>
+    </table>
+
+    <br />
+    <table width="900px">
+        <thead>
+            <tr style="border:solid 1px">
+                <th style="text-align:center; font-size:10px; padding:5px; width:225px; border:solid 1px">
+                    TOTAL INTERESES NO GRAV IGV
+                </th>
+                <th style="text-align:center; font-size:10px; padding:5px; width:225px; border:solid 1px" ">
+                    TOTAL INTERESES GRAV IGV
+                </th>
+                <th style="text-align:center; font-size:10px; padding:5px; width:225px; border:solid 1px" ">
+                    IGV
+                </th>
+                <th style="text-align:center; font-size:10px; padding:5px; width:225px; border:solid 1px" ">
+                    IMPORTE TOTAL
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td style="font-size:11px; padding:5px; text-align:right; border:solid 1px">
+                    @{
+                        var sumaTotal = Model.Sum(x => x.INTERES);
+                        //Model.Sum(x => x.CAPITAL) +
+                        //+ Model.Sum(x => x.COMISION) + Model.Sum(x => x.OTROS);
+                        var impgratota = Model.Sum(x => x.IMPORTEGRAVADO);
+                    }
+                    @sumaTotal.ToString("#,##0.00")
+                </td>
+                <td style="font-size:11px; padding:5px;  text-align:right; border:solid 1px">
+                    @Model.Sum(x => x.IMPORTEGRAVADO)
+                </td>
+                <td style="text-align:right; font-size:11px; padding:5px;  text-align:right; border:solid 1px">
+                    @{
+                        var igv = 0.19 * Convert.ToDouble(impgratota);
+                    }
+                    @igv.ToString("#,##0.00")
+                </td>
+                <td style="text-align:right; font-size:11px; padding:5px;  text-align:right; border:solid 1px">
+                    @{
+                        var imptotal = Convert.ToDouble(sumaTotal) + Convert.ToDouble(impgratota) + Convert.ToDouble(igv);
+                    }
+                    @imptotal.ToString("#,##0.00")
+                </td>
+
+            </tr>
+
+        </tbody>
+    </table>
+
+</body>
+</html>
