@@ -227,6 +227,8 @@ namespace ReadInboxEmail.WebApplication.Controllers
                             obj.subject = item.Subject;
                             obj.sender = item.From.ToString();
                             obj.sendDate = item.Date;
+                            if (item.Attachments == null) { }
+                            else obj.Attachments = item.Attachments;
 
 
                             using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["Conexion"].ConnectionString))
@@ -402,13 +404,9 @@ namespace ReadInboxEmail.WebApplication.Controllers
                         x.Apellidos_nombres = reader.GetString(3);
                         x.TIPODOCUMENTO = reader.GetString(4);
 
-
                         data.Add(x);
 
                     }
-
-
-
 
                 }
                 catch (Exception e)
@@ -446,9 +444,9 @@ namespace ReadInboxEmail.WebApplication.Controllers
                 Renderer.PrintOptions.CssMediaType = PdfPrintOptions.PdfCssMediaType.Screen;
                 Renderer.PrintOptions.InputEncoding = Encoding.UTF8;
 
-               // Renderer.RenderUrlAsPdf("http://172.17.1.38:8078/MailBox/imprimir?dni=" + item2.NUMERODOCUMENTO.Trim() + "&num=" + item2.Numeracion.Trim()).SaveAs(Path.Combine(uploads, reporte2));
+                Renderer.RenderUrlAsPdf("http://172.17.1.38:8041/MailBox/imprimir?dni=" + item2.NUMERODOCUMENTO.Trim() + "&num=" + item2.Numeracion.Trim()).SaveAs(Path.Combine(uploads, reporte2));
 
-                Renderer.RenderUrlAsPdf("http://localhost:50563/MailBox/imprimir?dni=" + item2.NUMERODOCUMENTO.Trim() + "&num=" + item2.Numeracion.Trim()).SaveAs(Path.Combine(uploads, reporte2));
+               // Renderer.RenderUrlAsPdf("http://localhost:50563/MailBox/imprimir?dni=" + item2.NUMERODOCUMENTO.Trim() + "&num=" + item2.Numeracion.Trim()).SaveAs(Path.Combine(uploads, reporte2));
 
 
      

@@ -117,8 +117,7 @@ namespace ReadInboxEmail.WebApplication.Data
                         obj.subject = item.Subject;
                         obj.sender = item.From.ToString();
                         obj.sendDate = item.Date;
-                        if (item.Attachments == null) { }
-                        else obj.Attachments = item.Attachments;
+                       
 
                         model.Inbox.Add(obj);
                         success++;
